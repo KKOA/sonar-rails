@@ -3,3 +3,86 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+
+/* ==========================================================
+! color
+========================================================== */
+$white: #fff;
+$black: #000;
+$red: #a80000;
+$green: #438500;
+
+/* ==========================================================
+! Generic
+========================================================== */
+
+@media (min-width: 768px)
+{
+  .col-sm-offset-center-1 {
+    margin-left: 4.165%;
+    margin-right: 4.165%;
+  }
+}
+
+body {
+  background: #d7d7d7;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* ==========================================================
+! Logo & Tag line
+========================================================== */
+.logo-container {
+  background: $white;
+  padding: 20px 0;
+}
+
+.brand {
+  color: $black;
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.site-name {
+  margin-left: 10px;
+}
+
+.tagline {
+  display: none;
+}
+
+@media (min-width: 768px)
+{
+  .tagline {
+    border-left: solid 2px $black;
+    display: inline;
+    margin: 0 0 0 20px;
+    padding: 0 0 0 20px;
+    position: relative;
+    top: -4px;
+  }
+}
+
+/* ==========================================================
+! pagefooter
+========================================================== */
+
+.pagefooter {
+  background: #3a3a3a;
+  color: $white;
+}
+
+.copyright {
+  border-top: 3px double #5a5a5a;
+  border-bottom: 3px double #5a5a5a;
+  font-size: 85%;
+  margin: 20px 0;
+  padding: 10px;
+
+}
