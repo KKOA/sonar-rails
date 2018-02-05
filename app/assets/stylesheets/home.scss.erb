@@ -12,6 +12,8 @@ $white: #fff;
 $black: #000;
 $red: #a80000;
 $green: #438500;
+$translucentWhite: rgba(255,255,255,0.85);
+// $transparent
 
 /* ==========================================================
 ! Generic
@@ -68,6 +70,30 @@ body {
     top: -4px;
   }
 }
+/* ==========================================================
+! search
+========================================================== */
+
+#home-search-container {
+  background-image: url(<%= asset_path 'search-min.jpg' %>);
+  background-repeat: no-repeat;
+  background-position:center center;
+  min-height: 340px;
+  padding: 20px 0;
+}
+
+.searchForm-wrapper
+{
+  background:$translucentWhite;
+}
+
+#search-btn {
+  background: $green;
+  color: $white;
+  font-size: 18px;
+  padding: 10px;
+  text-shadow: -1px -1px 0 $black;
+}
 
 /* ==========================================================
 ! pagefooter
@@ -79,8 +105,8 @@ body {
 }
 
 .copyright {
-  border-top: 3px double #5a5a5a;
   border-bottom: 3px double #5a5a5a;
+  border-top: 3px double #5a5a5a;
   font-size: 85%;
   margin: 20px 0;
   padding: 10px;
