@@ -1,7 +1,8 @@
+
 <% channel_opt =[
   ['Please Select',''],
   ['sales', 'sales'],
-  ['Lettings', 'Lettings']
+  ['lettings', 'lettings']
 ]
 
 property_types = {
@@ -56,7 +57,7 @@ rooms =
                 <div class='form-group'>
                   <%= label_tag(:location, "Location", class: 'col-sm-2 control-label') %>
                   <div class="col-sm-10">
-                    <%= text_field_tag(:location, "", class:"form-control", placeholder:"Bristol") %>
+                    <%= text_field_tag(:location, "", class:"form-control", placeholder:"Bristol", value: 'Leeds') %>
                   </div>
                 </div>
 
@@ -70,22 +71,22 @@ rooms =
                   <h3 class='text-center'>Bedrooms</h3>
 
                 <div class='form-group'>
-                  <%= label_tag(:min_beds, "Min", class: 'col-sm-2 control-label') %>
+                  <%= label_tag(:min_bedrooms, "Min", class: 'col-sm-2 control-label') %>
                   <div class="col-sm-10">
-                    <%= select_tag(:min_beds, options_for_select(rooms),  class:"form-control") %>
+                    <%= select_tag(:min_bedrooms, options_for_select(rooms),  class:"form-control") %>
                   </div>
                 </div>
 
                 <div class='form-group'>
-                  <%= label_tag(:max_beds, "Max", class: 'col-sm-2 control-label') %>
+                  <%= label_tag(:max_bedrooms, "Max", class: 'col-sm-2 control-label') %>
                   <div class="col-sm-10">
-                    <%= select_tag(:max_beds, options_for_select(rooms),  class:"form-control") %>
+                    <%= select_tag(:max_bedrooms, options_for_select(rooms),  class:"form-control") %>
                   </div>
                 </div>
 
                 <div class='form-group'>
                   <div class="col-sm-offset-2 col-sm-10">
-                    <%= button_tag('Search', type: 'button', name: 'search', id: 'search-btn', class:'btn btn-primary col-xs-12') %>
+                    <%= submit_tag 'Search', name: 'search', id: 'search-btn', class:'btn btn-primary col-xs-12' %>
                   </div>
                 </div>
 
@@ -96,5 +97,10 @@ rooms =
         </div>
       </div>
     </div>
+  </div>
+</div>
+<div class='row' id='results'>
+  <div class='col-sm-offset-center-1 col-sm-4 props-result'>
+
   </div>
 </div>
