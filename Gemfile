@@ -37,6 +37,8 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 gem 'mysql2'
 gem 'rails_real_favicon'
+gem 'sprockets_better_errors'
+gem 'httparty'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution
