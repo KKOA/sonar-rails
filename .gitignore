@@ -22,3 +22,7 @@
 
 .byebug_history
 .DS_Store
+
+config/secrets.yml
+config/environments/production.rb
+config/environments/development.rb
