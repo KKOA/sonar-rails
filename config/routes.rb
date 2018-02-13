@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   root 'home#index'
 
   get '/search', to: 'home#search'
+
+  get '/properties/:id', to: 'home#show'
 end
