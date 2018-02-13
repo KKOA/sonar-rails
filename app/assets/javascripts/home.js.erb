@@ -1,0 +1,180 @@
+$(document).ready(function(){
+
+  function is_bigger(element1, element2)
+  {
+    if(element1.val() < element2.val()){ return true; }
+    return false;
+  }
+  function match_values(element1, element2)
+  {
+    if(!(is_blank($max_bedrooms))){ element1.val(element2.val()); }
+  }
+
+  function is_blank(element)
+  {
+    if(element.val() == ''){ return true; }
+    return false;
+  }
+
+  function is_sold(property)
+  {
+    if(property.status === 'Sold')
+    {
+      return true;
+    }
+    return false;
+  }
+  function let_agreed(property)
+  {
+    if(property.status === 'Let agreed')
+    {
+      return true;
+    }
+    return false;
+  }
+
+  function ucfirst(string)
+  {
+    // return typeof string;
+    if(typeof string != 'undefined')
+    {
+      return string.charAt(0).toUpperCase()+string.slice(1);
+    }
+    return string;
+  }
+
+  // Form fields
+  $channel = $('#channel');
+  $min_bedrooms = $('#min_bedrooms');
+  $max_bedrooms = $('#max_bedrooms');
+  $location = $('#location');
+  $props_result = $('.props-result');
+
+  // prevent min bedrooms exceed max price
+  $min_bedrooms.bind('keyup mouseup', function () {
+      $this = $(this);
+      if(is_bigger($max_bedrooms, $this) && !(is_blank($max_bedrooms))/**/)
+      {
+        match_values($max_bedrooms, $this)
+      }
+  });
+
+  $max_bedrooms.bind('keyup mouseup', function () {
+      $this = $(this);
+      // console.log('min :' + $min_bedrooms.val());
+      // console.log('max :' + $max_bedrooms.val());
+      if(is_bigger($this, $min_bedrooms) && !(is_blank($min_bedrooms)))
+      {
+        match_values($min_bedrooms, $this)
+      }
+  });
+
+  //
+  $('#search-btn').click(function(){
+    event.preventDefault();
+
+    criteria = {
+      channel: $channel.val(),
+      min_bedrooms: $min_bedrooms.val(),
+      max_bedrooms: $max_bedrooms.val(),
+      location: $location.val()
+    }
+
+    //Ajax
+    $.ajax({
+      type: 'GET',
+      url: '/search',
+      data: criteria,
+      success: function(properties)
+      {
+        console.log(properties);
+        console.log(properties.length);
+        result =''
+        if(properties.length <= 0)
+        {
+          result = '<p class="text-center"><strong>';
+          result += 'Sorry, we could not find any properties matching your criterias. Try widenning your search criteria.'
+          result += '</strong></p>';
+        }
+        else
+        {
+          properties.forEach(function(property) {
+            // console.log(property);
+
+            property_uri = property.resource_uri;
+            // console.log(property_uri);
+            property_id = property.property_id;
+            price = property.price_value;
+            channel = property.primary_channel;
+            property_type = ucfirst(property.property_type);
+            bedrooms = property.bedrooms;
+            bathrooms = property.bathrooms;
+            description = property.short_description;
+             img_src = `<%= image_path("placeholder.png")%>`;
+            if(property.photos.length != 0)
+            {
+              img_src = 'https://mr0.homeflow.co.uk/';
+              img_src += property.photos[0];
+            }
+
+            address = property.display_address;
+            // res
+            result +="<div class='col-xs-offset-center-1 col-xs-11 col-sm-5 col-sm-offset-center-1 col-md-3 property'>";
+            // result +='<p>Price : ' + price + '</p>';
+            result +='<p class="prop-address text-center">'+address+'</p>';
+            result += '</p>'
+
+            result += '<a href="'+ property_uri +'" class="prop-photo-link pull-right" data-status="'+ property.status+'">';
+
+            result += '<img src="'+ img_src +'" class="img-responsive">';
+
+            if((channel== 'sales' && is_sold(property)) || (channel== 'lettings' && let_agreed(property)))
+            {
+              result +="<div class='prop-status'>"+property.status+"</div>";
+            }
+            // result +="<div class='prop-status'>"+property.status+"</div>";
+            // result += `<%= image_path("placeholder.png")%>`;
+            result += '</a>';
+            result +='<p class="prop-price">';
+            if(channel === 'lettings')
+            {
+              result += accounting.formatMoney(price, "£", 2, ",", ".") +' pcm ';
+            }
+            else
+            {
+              result += property.price;
+            }
+            result += '<p class="prop-bedrooms">';
+            result +=  `Type : ${property_type}`;
+            result += '</p>';
+
+            result += '<p class="prop-bedrooms">';
+            result +=  `Bedrooms : ${bedrooms}`;
+            result += '</p>';
+            if(bathrooms != undefined)
+            {
+              result += '<p class="prop-bedrooms">';
+              result +=  `Bathrooms : ${bathrooms}`;
+              result += '</p>';
+            }
+            if(description.length !== 0)
+            {
+              result += '<p class="prop-description">';
+              result +=  description.substring(0,150);
+              result += '</p>';
+            }
+            result +='</div>';
+
+          });
+
+        }
+        $props_result.html('');
+        $props_result.append(result);
+
+      }// end of success
+    });
+    //
+  });
+
+  //
+});
