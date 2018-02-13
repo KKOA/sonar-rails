@@ -101,8 +101,8 @@ body {
 
 .property
 {
-  border:solid 1px #000;
-  min-height:300px;
+  // border:solid 1px $black;
+  min-height:400px;
   margin-top:20px;
   margin-bottom:20px;
   background:$white;
@@ -113,6 +113,85 @@ body {
   // margin-top: 20px;
 }
 
+.prop-address
+{
+  background:$green;
+  color:white;
+  font-weight:bold;
+  margin-left: -15px;
+  margin-right: -15px;
+  padding:10px;
+}
+
+.prop-photo-link
+{
+  display:block;
+  img
+  {
+    margin:auto;
+  }
+}
+
+.prop-price
+{
+  font-wieght:bold;
+}
+
+/* ==========================================================
+! Modal - single property
+========================================================== */
+
+.modal-content { background: #d7d7d7; }
+
+.modal-header
+{
+  background:$green;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  color: $white;
+}
+
+.modal-header .close
+{
+  background: $white;
+  border-radius: 50%;
+  border: 2px solid $black;
+  opacity: 0.5;
+  padding: 5px 10px;
+}
+
+.modal-header .close:hover
+{
+  background:$black;
+  color:$white;
+  opacity:1;
+  text-shadow: 0 1px 0 $white;
+}
+
+.nav-tabs>.active { font-weight: bold; }
+
+.nav-tabs>li>a
+{
+  background: #a2a2a2;
+  color: $white;
+}
+
+.nav-tabs>li>a:hover
+{
+  background: #a2a2a2;
+  text-decoration: underline;
+}
+
+.tab-content { background: $white; }
+
+.tab-pane { padding: 20px; }
+
+.agency-link
+{
+  display: block;
+  margin: 0 auto;
+  width: 50%;
+}
 
 
 /* ==========================================================

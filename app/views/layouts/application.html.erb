@@ -12,6 +12,7 @@
   </head>
 
   <body>
+    <% debug ENV.to_h.to_yaml %>
     <%= render 'layouts/header' %>
     <%= yield %>
     <%= render 'layouts/footer' %>

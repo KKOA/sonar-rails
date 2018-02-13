@@ -24,6 +24,7 @@ property_types = {
 rooms =
 {
   'Please Select'=>'',
+  '0'=> '0',
   '1'=>'1',
   '2'=>'2',
   '3'=>'3',
@@ -99,8 +100,208 @@ rooms =
     </div>
   </div>
 </div>
-<div class='row' id='results'>
-  <div class='col-sm-offset-center-1 col-sm-4 props-result'>
+<!-- -->
 
+<!-- Trigger the modal with a button -->
+
+
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button> -->
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><!--Property Address--></h4>
+      </div>
+      <div class="modal-body">
+
+        <div>
+
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#description" aria-controls="description" role="tab" data-toggle="tab">Description</a></li>
+            <li role="presentation"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photo</a></li>
+            <li role="presentation"><a href="#map-view" aria-controls="map-view" role="tab" data-toggle="tab">MapView</a></li>
+            <li role="presentation"><a href="#floor-plan" aria-controls="floor-plan" role="tab" data-toggle="tab">Floor Plans</a></li>
+            <li role="presentation"><a href="#agency" aria-controls="agency" role="tab" data-toggle="tab">Agency</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="description">
+              <!-- Property description -->
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="photos">
+              <div class="row" id='photoCarousel'>
+                <!-- Property photos -->
+              </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="map-view">
+              Google Map Here
+              <!-- Property location map -->
+            </div>
+            <div role="tabpanel" class="tab-pane" id="floor-plan">
+              <!-- -->
+              <div class="row">
+                <div class="col-xs-12">
+                  <!-- Property Floor plan photos -->
+                </div>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="agency">
+              <!-- agency details -->
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- -->
+<div class='row' id='results'>
+  <div class='col-sm-12 props-result'>
+  </div>
+</div>
+
+
+
+<!-- -->
+<hr>
+
+
+<style>
+
+.my
+{
+  background:white;
+  padding:10px;
+  margin:20px;
+}
+
+#slider
+{
+  margin-bottom:10px;
+}
+
+.carousel-control.left,.carousel-control.right
+{
+  /* background-image: none; */
+}
+
+#agency img{
+  margin:auto;
+}
+
+.item
+{
+  /* background:white;
+  padding:10px; */
+
+}
+
+.carousel-inner>.item> img
+{
+  width:100%;
+  /* height:480px; */
+}
+
+/* Carousel  styles*/
+  .slider-navigation {
+    /* padding: 30px 15px; */
+    padding:5px;
+    text-align: center;
+  }
+
+  #slider-thumbs .list-inline li {
+    padding: 0px;
+    margin-right: -4px;
+    cursor: pointer;
+  }
+
+  .slider-nav-arrow {
+    text-align: center;
+    margin-bottom: 0px;
+    visibility: hidden;
+  }
+
+  .selected .slider-nav-arrow {
+    visibility: visible;
+  }
+
+  .selected .slider-navigation {
+    opacity: 0.5;
+  }
+
+  #slider-thumbs .list-inline li
+  {
+  margin: 5px;
+  /* border:1px solid black; */
+  background:white;
+  }
+
+  /* .property .prop-photo-link::before {
+    content: attr(data-status);
+    display: block;
+    position: absolute;
+    z-index: 8;
+    background-color: #000;
+    background-color: rgba(0,0,0,0.4);
+    color: #fff;
+    top: 25px;
+    left: -60px;
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 12px;
+    box-sizing: border-box;
+    font-weight: 800;
+    text-transform: uppercase;
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+} */
+.prop-status {
+  /* content: attr(data-status); */
+  display: block;
+  /* position: absolute; */
+  z-index: 8;
+  background-color: #000;
+  background-color: rgba(0,0,0,0.4);
+  color: #fff;
+  /* top: 25px; */
+  /* left: -60px; */
+  /* width: 200px; */
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 12px;
+  box-sizing: border-box;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-decoration: none;
+  /* -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg); */
+}
+
+@media (max-width: 767px)
+{
+  .col-xs-offset-center-1 {
+    margin-left: 4.165%;
+    margin-right: 4.165%;
+  }
+}
+
+</style>
