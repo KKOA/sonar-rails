@@ -18,30 +18,24 @@ class HomeController < ApplicationController
     if params[:max_bedrooms].length > 0
       query[:max_bedrooms] = "[search][max_bedrooms]=#{params[:max_bedrooms]}"
     end
-    puts query
+    # puts query
     query_parameters = query.values.join("&")
     url = url + query_parameters
-    puts url
+    # puts url
     response = HTTParty.get(url)
-    # response = HTTParty.get(url).parsed_response
     # puts response.code
-    # if response.code == 500
-    #   render json: { error: 'some text'}
-    # else
-    puts response.code
-      response = response.parsed_response
-      render json: response['result']['properties']['elements']
-    # end
+    response = response.parsed_response
+    # puts ENV['GOOGLE_MAP_API']
+    render json: response['result']['properties']['elements']
   end
 
   def show
-    puts params
+    # puts params
     url = 'http://index1.homeflow.co.uk/properties/'+params[:id]+'?'
     api_key="api_key=#{ENV['HOMEFLOW_KEY']}"
     url = url + api_key
     response = HTTParty.get(url)
     response = response.parsed_response
-    render json: response['result']['property']
-    # http://index1.homeflow.co.uk/properties/11128626?api_key=77467477edfd2689cd77796a2c4b019f
+    render json: {property: response['result']['property'],map_key: ENV['GOOGLE_MAP_API']}
   end
 end
