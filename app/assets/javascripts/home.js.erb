@@ -1,48 +1,5 @@
 $(document).ready(function(){
 
-  function is_bigger(element1, element2)
-  {
-    if(element1.val() < element2.val()){ return true; }
-    return false;
-  }
-  function match_values(element1, element2)
-  {
-    if(!(is_blank($max_bedrooms))){ element1.val(element2.val()); }
-  }
-
-  function is_blank(element)
-  {
-    if(element.val() == ''){ return true; }
-    return false;
-  }
-
-  function is_sold(property)
-  {
-    if(property.status === 'Sold')
-    {
-      return true;
-    }
-    return false;
-  }
-  function let_agreed(property)
-  {
-    if(property.status === 'Let agreed')
-    {
-      return true;
-    }
-    return false;
-  }
-
-  function ucfirst(string)
-  {
-    // return typeof string;
-    if(typeof string != 'undefined')
-    {
-      return string.charAt(0).toUpperCase()+string.slice(1);
-    }
-    return string;
-  }
-
   // Form fields
   $channel = $('#channel');
   $min_bedrooms = $('#min_bedrooms');
@@ -53,26 +10,25 @@ $(document).ready(function(){
   // prevent min bedrooms exceed max price
   $min_bedrooms.bind('keyup mouseup', function () {
       $this = $(this);
-      if(is_bigger($max_bedrooms, $this) && !(is_blank($max_bedrooms))/**/)
+      if(isBigger($max_bedrooms, $this) && !(isBlank($max_bedrooms)))
       {
-        match_values($max_bedrooms, $this)
+        matchValues($max_bedrooms, $this)
       }
   });
 
   $max_bedrooms.bind('keyup mouseup', function () {
       $this = $(this);
-      // console.log('min :' + $min_bedrooms.val());
-      // console.log('max :' + $max_bedrooms.val());
-      if(is_bigger($this, $min_bedrooms) && !(is_blank($min_bedrooms)))
+      if(isBigger($this, $min_bedrooms) && !(isBlank($min_bedrooms)))
       {
-        match_values($min_bedrooms, $this)
+        matchValues($min_bedrooms, $this)
       }
   });
 
   //
   $('#search-btn').click(function(){
     event.preventDefault();
-
+    loading_src = `<%= image_path("loading.gif")%>`;
+    $props_result.html(`<img src="${loading_src}" id='searchResult' class='loading'>`);
     criteria = {
       channel: $channel.val(),
       min_bedrooms: $min_bedrooms.val(),
@@ -87,6 +43,7 @@ $(document).ready(function(){
       data: criteria,
       success: function(properties)
       {
+        $('.props-result .loading').fadeOut('fast');
         console.log(properties);
         console.log(properties.length);
         result =''
@@ -106,75 +63,101 @@ $(document).ready(function(){
             property_id = property.property_id;
             price = property.price_value;
             channel = property.primary_channel;
-            property_type = ucfirst(property.property_type);
+            property_type = formatPropertyType(property.property_type);
             bedrooms = property.bedrooms;
             bathrooms = property.bathrooms;
+            receptions =property.reception_rooms;
             description = property.short_description;
-             img_src = `<%= image_path("placeholder.png")%>`;
+            img_src ='https://dummyimage.com/600x400/ebe7e8/000000.png&text=Awaiting+Images';
+            // img_src = `<%= image_path("placeholder.png")%>`;
             if(property.photos.length != 0)
             {
               img_src = 'https://mr0.homeflow.co.uk/';
-              img_src += property.photos[0];
+              img_src += property.photos[0].replace(/120x90/g,'600x400');
             }
 
             address = property.display_address;
-            // res
-            result +="<div class='col-xs-offset-center-1 col-xs-11 col-sm-5 col-sm-offset-center-1 col-md-3 property'>";
-            // result +='<p>Price : ' + price + '</p>';
-            result +='<p class="prop-address text-center">'+address+'</p>';
-            result += '</p>'
 
-            result += '<a href="'+ property_uri +'" class="prop-photo-link pull-right" data-status="'+ property.status+'">';
+            result +="<div class='col-xs-offset-center-1 col-xs-11 col-sm-5 col-sm-offset-center-1 col-md-3 property'>";
+
+            result +="<p class='prop-address text-center'>"+address+"</p>";
+
+            result += "<a ";
+            if((channel === 'sales' && isSold(property) === false ) || (channel === 'lettings' && letAgreed(property) === false))
+            {
+              result += `href='${property_uri}' `;
+            }
+            result += 'class="prop-photo-link">';
 
             result += '<img src="'+ img_src +'" class="img-responsive">';
 
-            if((channel== 'sales' && is_sold(property)) || (channel== 'lettings' && let_agreed(property)))
+            if((channel === 'sales' && isSold(property)) || (channel === 'lettings' && letAgreed(property)))
             {
               result +="<div class='prop-status'>"+property.status+"</div>";
             }
-            // result +="<div class='prop-status'>"+property.status+"</div>";
-            // result += `<%= image_path("placeholder.png")%>`;
+
             result += '</a>';
-            result +='<p class="prop-price">';
+
+            result += "<div class='prop-info'>";
+
+            //Price
+            price = property.price;
             if(channel === 'lettings')
             {
-              result += accounting.formatMoney(price, "£", 2, ",", ".") +' pcm ';
+              price = accounting.formatMoney(price, "£", 2, ",", ".") +' pcm ';
             }
-            else
-            {
-              result += property.price;
-            }
-            result += '<p class="prop-bedrooms">';
-            result +=  `Type : ${property_type}`;
-            result += '</p>';
+            result += `<p class='prop_price'>${price}</p>`;
 
-            result += '<p class="prop-bedrooms">';
-            result +=  `Bedrooms : ${bedrooms}`;
-            result += '</p>';
+            //Property Type
+            result += `<p class='prop_type'> Type : ${property_type} </p>`;
+
+            result += '<p>';
+            //Property Bedrooms
+            result += `<span class='prop_bedrooms'>${bedrooms}bd </span>`;
+
+            //Property Bathrooms
             if(bathrooms != undefined)
             {
-              result += '<p class="prop-bedrooms">';
-              result +=  `Bathrooms : ${bathrooms}`;
-              result += '</p>';
+              result += `<span class='prop_bathrooms'>${bathrooms}bth </span>`;
             }
+
+            //Property Receptions
+            if(receptions != undefined)
+            {
+              result += `<span class='prop_receptions'>${receptions}r </span>`;
+            }
+            result += '</p>';
+
+            //Property furnished
+            if(channel == 'lettings')
+            {
+              result += `<p class="prop-furnished"> Furnished : ${isFurnished(property)}</p>`;
+            }
+
             if(description.length !== 0)
             {
-              result += '<p class="prop-description">';
-              result +=  description.substring(0,150);
-              result += '</p>';
+            //   result += '<p class="prop-description">';
+            //   result +=  description.substring(0,150);
+            //   result += '</p>';
+              result += "<p class='prop-description'>";
+              result +=`${description.substring(0,150)} ... `;
+              if((channel== 'sales' && isSold(property) == false ) || (channel== 'lettings' && letAgreed(property) == false))
+              {
+                result += `<a href='${property_uri}' style='font-weight:bold'> More </a>`;
+              }
+              result +="</p>";
             }
+
+            result += "</div>"; /* End of Property info */
             result +='</div>';
 
           });
 
         }
-        $props_result.html('');
-        $props_result.append(result);
+        $props_result.html(result);
 
       }// end of success
-    });
-    //
-  });
+    });// End of ajax
+  }); // End of search-btn clicked
 
-  //
 });
