@@ -138,10 +138,7 @@ rooms =
                 <!-- Property photos -->
               </div>
             </div>
-
             <div role="tabpanel" class="tab-pane" id="map-view">
-              Google Map Here
-              <!-- Property location map -->
             </div>
             <div role="tabpanel" class="tab-pane" id="floor-plan">
               <!-- -->
@@ -166,47 +163,30 @@ rooms =
   </div>
 </div>
 
-<!-- -->
+<!-- <div>
+  <img src="<%= image_path("loading.gif")%>" id='searchResult' class='loading'>
+</div> -->
+
+<!--  Search Results -->
 <div class='row' id='results'>
   <div class='col-sm-12 props-result'>
+    <!-- <img src="<% image_path("loading.gif")%>" id='searchResult' class='loading'> -->
   </div>
 </div>
 
-
-
-<!-- -->
-<hr>
-
-
 <style>
 
-.my
-{
-  background:white;
-  padding:10px;
-  margin:20px;
-}
+/* Property Modal */
+
+
+/* Description tab */
+/* Photos tab */
 
 #slider
 {
   margin-bottom:10px;
 }
 
-.carousel-control.left,.carousel-control.right
-{
-  /* background-image: none; */
-}
-
-#agency img{
-  margin:auto;
-}
-
-.item
-{
-  /* background:white;
-  padding:10px; */
-
-}
 
 .carousel-inner>.item> img
 {
@@ -216,18 +196,24 @@ rooms =
 
 /* Carousel  styles*/
   .slider-navigation {
-    /* padding: 30px 15px; */
     padding:5px;
     text-align: center;
   }
 
   #slider-thumbs .list-inline li {
     padding: 0px;
-    margin-right: -4px;
     cursor: pointer;
+    margin: 5px;
+    background:white;
   }
 
-  .slider-nav-arrow {
+
+  /* #slider-thumbs .list-inline li
+  {
+  margin: 5px;
+  background:white;
+  } */
+  /* .slider-nav-arrow {
     text-align: center;
     margin-bottom: 0px;
     visibility: hidden;
@@ -235,73 +221,29 @@ rooms =
 
   .selected .slider-nav-arrow {
     visibility: visible;
-  }
+  } */
 
   .selected .slider-navigation {
     opacity: 0.5;
   }
 
-  #slider-thumbs .list-inline li
-  {
-  margin: 5px;
-  /* border:1px solid black; */
-  background:white;
-  }
+/* Thumbnails */
 
-  /* .property .prop-photo-link::before {
-    content: attr(data-status);
-    display: block;
-    position: absolute;
-    z-index: 8;
-    background-color: #000;
-    background-color: rgba(0,0,0,0.4);
-    color: #fff;
-    top: 25px;
-    left: -60px;
-    width: 200px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 12px;
-    box-sizing: border-box;
-    font-weight: 800;
-    text-transform: uppercase;
-    -moz-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-} */
-.prop-status {
-  /* content: attr(data-status); */
-  display: block;
-  /* position: absolute; */
-  z-index: 8;
-  background-color: #000;
-  background-color: rgba(0,0,0,0.4);
-  color: #fff;
-  /* top: 25px; */
-  /* left: -60px; */
-  /* width: 200px; */
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  font-size: 12px;
-  box-sizing: border-box;
-  font-weight: bold;
-  text-transform: uppercase;
-  text-decoration: none;
-  /* -moz-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg); */
-}
 
-@media (max-width: 767px)
+
+/* Map View */
+#map-view iframe
 {
-  .col-xs-offset-center-1 {
-    margin-left: 4.165%;
-    margin-right: 4.165%;
-  }
+  width : 100%;
+  min-height:300px;
+  border:none;
 }
+/* Floor Plans */
+
+
+/* Agency */
+
+#agency img { margin:auto; }
+
 
 </style>
