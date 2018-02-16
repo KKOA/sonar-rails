@@ -9,15 +9,21 @@ $( document ).ready(function() {
 
   $(".props-result").on("click","a",function(event){
     event.preventDefault();
-    console.log('-----------------------------')
+    // console.log('-----------------------------')
     url = $(this).attr('href');
+    if(url == undefined)
+    {
+      return false;
+    }
     $.ajax({
       type: 'GET',
       url: url,
-      success: function(property)
+      // success: function(property)
+      success: function(res)
       {
-        console.log(property);
-
+        property = res.property
+        // console.log(property);
+        // console.log(res.map_key);
         address = property.display_address;
         description = property.short_description;
         coordinates ={
@@ -29,7 +35,7 @@ $( document ).ready(function() {
         "name": property.agency.agency_name,
         "logo": 'https://mr0.homeflow.co.uk/'+property.agency.agency_logo,
         "url": 'http://'+property.agency.external_domain,
-        "tel": property.contact_telephone,
+        // "tel": property.contact_telephone,
         }
         photos = property.photos;
 
@@ -37,37 +43,6 @@ $( document ).ready(function() {
         $modal_title.html(address);
         // Description
         $modal_desc.html(description);
-
-        // Agency
-        agency_text =''
-        agency_text+= "<p class='text-center'> Interested in this property or have general enquiry, you can contact us on</p>";
-        agency_text+= "<div class='agency-contact text-center'>" + agency.tel +"</div>";
-        agency_text+= "<p class='text-center'>or click the logo below to vist our site.</p>";
-        agency_text+= "<a href='"+ agency.url +"' title='Link to " + agency.name + " homepage ' class='agency-link' target='_blank'>";
-        agency_text+= "<div class='text-center sr-only'>" + agency.name + "</div>";
-        agency_text+= "<img src='" + agency.logo + "' class='img-responsive'>";
-        agency_text+= "</a>";
-        $modal_agency.html(agency_text);
-
-        //floorplan
-        floorPlanPhotos = 'No floorplan are avaliable for property';
-        console.log(floorplans.length);
-        if(floorplans.length > 0)
-        {
-          floorPlanPhotos = "<ul class='list-inline'>";
-          floorplans.forEach(function(floorplan, index){
-            // console.log(floorplan);
-            FloorPlanSrc='https://mr0.homeflow.co.uk/';
-            FloorPlanSrc += floorplan.image;
-
-            floorPlanPhotos += "<li>";
-            floorPlanPhotos += "<img src='" + FloorPlanSrc + "' class='img-responsive img-rounded'>";
-            floorPlanPhotos += "</li>";
-          })
-          floorPlanPhotos += "</ul>";
-
-        }
-        $('#floor-plan .col-xs-12').html(floorPlanPhotos);
 
         //photo
         photosCarousel = 'No images avaliable for property';
@@ -133,13 +108,75 @@ $( document ).ready(function() {
         }
         $('#photoCarousel').html(photosCarousel);
 
+        //MapView
+        map_url = "https://www.google.com/maps/embed/v1/place?";
+        parameters = `q=${address}`;
+        parameters += "&zoom=13";
+        parameters += `&key=${res.map_key}`;
+        parameters += `&center=${coordinates.lat},${coordinates.lng}`;
+        map_url+=parameters;
+        $modal_map_view.html(`<iframe src='${map_url}'></iframe>`);
+
+        //floorplan
+        floorPlanPhotos = 'No floorplan are avaliable for property';
+        // console.log(floorplans.length);
+        if(floorplans.length > 0)
+        {
+          floorPlanPhotos = "<ul class='list-inline'>";
+          floorplans.forEach(function(floorplan, index){
+            // console.log(floorplan);
+            FloorPlanSrc='https://mr0.homeflow.co.uk/';
+            FloorPlanSrc += floorplan.image;
+
+            floorPlanPhotos += "<li>";
+            floorPlanPhotos += "<img src='" + FloorPlanSrc + "' class='img-responsive img-rounded'>";
+            floorPlanPhotos += "</li>";
+          })
+          floorPlanPhotos += "</ul>";
+
+        }
+        $('#floor-plan .col-xs-12').html(floorPlanPhotos);
+
+        // Agency
+        agency_text =''
+        agency_text+= "<p class='text-center'> Interested in this property or have general enquiry</p>";
+        // agency_text+= "<div class='agency-contact text-center'>" + agency.tel +"</div>";
+        agency_text+= "<p class='text-center'>click the logo below to vist our site.</p>";
+        agency_text+= "<a href='"+ agency.url +"' title='Link to " + agency.name + " homepage ' class='agency-link' target='_blank'>";
+        agency_text+= "<div class='text-center sr-only'>" + agency.name + "</div>";
+        agency_text+= "<img src='" + agency.logo + "' class='img-responsive'>";
+        agency_text+= "</a>";
+        $modal_agency.html(agency_text);
+
         //Open Modal
         $('.modal').modal('show');
-//
+
       }// end of success
     });
 
 
   });
+
+  // Allow user select photo from thumbnail
+  $("#photoCarousel").on("click","[id^=carousel-selector-]",function(){
+  var id_selector = $(this).attr("id");
+  // console.log(id_selector);
+  var id = id_selector.substr(id_selector.length - 1);
+  // console.log(id);
+  id = parseInt(id);
+  $('#myCarousel').carousel(id);
+  $('[id^=carousel-selector-]').removeClass('selected');
+  $(this).addClass('selected');
+  //console.log(this);
+});
+
+// when the carousel slides, auto update
+$("#photoCarousel").on('slid.bs.carousel',"#myCarousel",function(e){
+  var id = $('.item.active').data('slide-number');
+  id = parseInt(id);
+  $('[id^=carousel-selector-]').removeClass('selected');
+  $('[id=carousel-selector-' + id + ']').addClass('selected');
+});
+
 
 });
