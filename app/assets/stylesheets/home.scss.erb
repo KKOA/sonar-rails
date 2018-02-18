@@ -95,12 +95,25 @@ body {
   background:$translucentWhite;
 }
 
+.bedroom-label,
+.price-label
+{
+  font-weight:bold;
+   padding: 6px 15px;
+}
+
+
 #search-btn {
   background: $green;
   color: $white;
   font-size: 18px;
   padding: 10px;
   text-shadow: -1px -1px 0 $black;
+}
+#search-btn:hover
+{
+  background:#284D00;
+  color:$white;
 }
 
 /* ==========================================================
@@ -124,22 +137,24 @@ body {
   margin-top:20px;
   margin-bottom:20px;
   background:$white;
+  position:relative;
 }
 
-@media (min-width: 992px)
+@media (min-width: 768px) /*and (max-width: 991px)*/
 {
   .property
   {
-    min-height:500px;
+    // min-height:550px;
+    min-height:400px;
   }
 }
-@media (min-width: 768px) and (max-width: 991px)
-{
-  .property
-  {
-    min-height:550px;
-  }
-}
+// @media (min-width: 992px)
+// {
+//   .property
+//   {
+//     min-height:525px;
+//   }
+// }
 
 
 .prop-address
@@ -188,17 +203,83 @@ a:hover .prop-status
   {
     margin:auto;
   }
+  &:hover
+  {
+    text-decoration: none;
+  }
 }
 
 .prop-price
 {
-  font-wieght:bold;
+  font-weight:bold;
+}
+
+.prop_bedrooms,.prop_bathrooms,.prop_receptions
+{
+    position: relative;
+    margin-left: 25px;
+    margin-right: 15px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.prop_bedrooms::before,.prop_bathrooms::before,.prop_receptions::before
+{
+  width: 20px;
+  height: 14px;
+  left: -25px;
+  top: 50%;
+  margin-top: -7px;
+  display: block;
+  position: absolute;
+  content: '';
+
+}
+
+.prop_bedrooms::before
+{
+  background-image: url(<%= asset_path 'bedroom.png' %>);
+}
+.prop_bathrooms::before
+{
+  background-image: url(<%= asset_path 'bathroom.png' %>);
+}
+.prop_receptions::before
+{
+  background-image: url(<%= asset_path 'reception.png' %>);
 }
 
 .prop-description
 {
   font-size:13px;
 }
+
+.more
+{
+  background:$green;
+  color:white;
+  font-weight:bold;
+  width:100%;
+
+}
+
+.more:hover
+{
+  background:#284D00;
+  color:$white;
+}
+
+@media (min-width: 768px)
+{
+  .more
+  {
+    width:90%;
+    position: absolute;
+    bottom:10px;
+
+  }
+}
+
 
 /* ==========================================================
 ! Modal - single property
