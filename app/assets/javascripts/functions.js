@@ -12,7 +12,7 @@ function isBigger(element1, element2)
 }
 function matchValues(element1, element2)
 {
-  if(!(isBlank($max_bedrooms))) { element1.val(element2.val()); }
+  if(!(isBlank(element1))) { element1.val(element2.val()); }
 }
 
 function isBlank(element)
