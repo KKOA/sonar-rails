@@ -5,10 +5,12 @@ $(document).ready(function(){
   $min_bedrooms = $('#min_bedrooms');
   $max_bedrooms = $('#max_bedrooms');
   $location = $('#location');
+  $min_price = $('#min_price');
+  $max_price = $('#max_price');
   $props_result = $('.props-result');
 
   // prevent min bedrooms exceed max price
-  $min_bedrooms.bind('keyup mouseup', function () {
+  $min_bedrooms.change(function () {
       $this = $(this);
       if(isBigger($max_bedrooms, $this) && !(isBlank($max_bedrooms)))
       {
@@ -16,7 +18,7 @@ $(document).ready(function(){
       }
   });
 
-  $max_bedrooms.bind('keyup mouseup', function () {
+  $max_bedrooms.change(function () {
       $this = $(this);
       if(isBigger($this, $min_bedrooms) && !(isBlank($min_bedrooms)))
       {
@@ -24,8 +26,34 @@ $(document).ready(function(){
       }
   });
 
+  // prevent min bedrooms exceed max price
+  $min_price.change(function () {
+      $this = $(this);
+      // console.log('');
+      // console.log('before');
+      // console.log($this.val());
+      // console.log($max_price.val());
+      if(isBigger($max_price, $this) && !(isBlank($max_price)))
+      {
+        matchValues($max_price, $this)
+        // console.log('called');
+      }
+      // console.log('after');
+      // console.log($this.val());
+      // console.log($max_price.val());
+  });
+
+  $max_price.change(function () {
+      $this = $(this);
+      if(isBigger($this, $min_price) && !(isBlank($min_price)))
+      {
+        matchValues($min_price, $this)
+      }
+  });
+
+
   //
-  $('#search-btn').click(function(){
+  $('#search-btn').click(function(event){
     event.preventDefault();
     loading_src = `<%= image_path("loading.gif")%>`;
     $props_result.html(`<img src="${loading_src}" id='searchResult' class='loading'>`);
@@ -33,7 +61,9 @@ $(document).ready(function(){
       channel: $channel.val(),
       min_bedrooms: $min_bedrooms.val(),
       max_bedrooms: $max_bedrooms.val(),
-      location: $location.val()
+      location: $location.val(),
+      min_price: $min_price.val(),
+      max_price: $max_price.val()
     }
 
     //Ajax
@@ -44,8 +74,8 @@ $(document).ready(function(){
       success: function(properties)
       {
         $('.props-result .loading').fadeOut('fast');
-        console.log(properties);
-        console.log(properties.length);
+        // console.log(properties);
+        // console.log(properties.length);
         result =''
         if(properties.length <= 0)
         {
@@ -63,7 +93,11 @@ $(document).ready(function(){
             property_id = property.property_id;
             price = property.price_value;
             channel = property.primary_channel;
-            property_type = formatPropertyType(property.property_type);
+            property_type = ''
+            if(typeof property.property_type !== 'undefined')
+            {
+              property_type = formatPropertyType(property.property_type);
+            }
             bedrooms = property.bedrooms;
             bathrooms = property.bathrooms;
             receptions =property.reception_rooms;
@@ -83,20 +117,20 @@ $(document).ready(function(){
             result +="<p class='prop-address text-center'>"+address+"</p>";
 
             result += "<a ";
-            if((channel === 'sales' && isSold(property) === false ) || (channel === 'lettings' && letAgreed(property) === false))
-            {
+            // if((channel === 'sales' && isSold(property) === false ) || (channel === 'lettings' && letAgreed(property) === false))
+            // {
               result += `href='${property_uri}' `;
-            }
-            result += 'class="prop-photo-link">';
+            // }
+            result += "class='prop-photo-link'>";
 
-            result += '<img src="'+ img_src +'" class="img-responsive">';
+            result += `<img src='${img_src}' class="img-responsive">`;
 
-            if((channel === 'sales' && isSold(property)) || (channel === 'lettings' && letAgreed(property)))
-            {
-              result +="<div class='prop-status'>"+property.status+"</div>";
-            }
+            // if((channel === 'sales' && isSold(property)) || (channel === 'lettings' && letAgreed(property)))
+            // {
+              result +=`<div class='prop-status'>${property.status}</div>`;
+            // }
 
-            result += '</a>';
+            result += "</a>";
 
             result += "<div class='prop-info'>";
 
@@ -106,50 +140,48 @@ $(document).ready(function(){
             {
               price = accounting.formatMoney(price, "£", 2, ",", ".") +' pcm ';
             }
-            result += `<p class='prop_price'>${price}</p>`;
+            result += `<p class='prop-price'>${price}</p>`;
 
             //Property Type
             result += `<p class='prop_type'> Type : ${property_type} </p>`;
 
-            result += '<p>';
+            result += "<p style='margin-bottom:40px'>";
             //Property Bedrooms
-            result += `<span class='prop_bedrooms'>${bedrooms}bd </span>`;
+            result += `<span class='prop_bedrooms' data-toggle='tooltip' data-placement='top' title='Bedrooms'>${bedrooms}</span>`;
 
             //Property Bathrooms
             if(bathrooms != undefined)
             {
-              result += `<span class='prop_bathrooms'>${bathrooms}bth </span>`;
+              result += `<span class='prop_bathrooms' data-toggle='tooltip' data-placement='top' title='Bathroom'>${bathrooms}</span>`;
             }
 
             //Property Receptions
             if(receptions != undefined)
             {
-              result += `<span class='prop_receptions'>${receptions}r </span>`;
+              result += `<span class='prop_receptions' data-toggle='tooltip' data-placement='top' title='Reception'>${receptions}</span>`;
             }
-            result += '</p>';
+            result += "</p>";
 
             //Property furnished
             if(channel == 'lettings')
             {
-              result += `<p class="prop-furnished"> Furnished : ${isFurnished(property)}</p>`;
+              result += `<p class='prop-furnished'> Furnished : ${isFurnished(property)}</p>`;
             }
 
-            if(description.length !== 0)
-            {
-            //   result += '<p class="prop-description">';
-            //   result +=  description.substring(0,150);
-            //   result += '</p>';
-              result += "<p class='prop-description'>";
-              result +=`${description.substring(0,150)} ... `;
-              if((channel== 'sales' && isSold(property) == false ) || (channel== 'lettings' && letAgreed(property) == false))
-              {
-                result += `<a href='${property_uri}' style='font-weight:bold'> More </a>`;
-              }
-              result +="</p>";
-            }
+            // if(description.length !== 0)
+            // {
+            //   result += "<p class='prop-description'>";
+            //   result +=`${description.substring(0,150)} ... `;
+            //   if((channel== 'sales' && isSold(property) == false ) || (channel== 'lettings' && letAgreed(property) == false))
+            //   {
+            //     result += `<a href='${property_uri}' class='more'> More </a>`;
+            //   }
+            //   result +="</p>";
+            // }
+            result +=`<a href='${property_uri}' class='btn btn-default more'>More</a>`;
 
             result += "</div>"; /* End of Property info */
-            result +='</div>';
+            result +="</div>";
 
           });
 
@@ -159,5 +191,5 @@ $(document).ready(function(){
       }// end of success
     });// End of ajax
   }); // End of search-btn clicked
-
+  $('body').tooltip({selector: '[data-toggle="tooltip"]'});
 });
