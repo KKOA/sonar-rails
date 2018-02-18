@@ -23,7 +23,7 @@ property_types = {
 
 rooms =
 {
-  'Please Select'=>'',
+  # 'Please Select'=>'',
   '0'=> '0',
   '1'=>'1',
   '2'=>'2',
@@ -34,6 +34,12 @@ rooms =
   '7'=>'7',
   '8+'=>'8'
 }
+
+
+min_rooms ={'Min':''}
+min_rooms.merge!(rooms)
+max_rooms ={'Max':''}
+max_rooms.merge!(rooms)
 
 %>
 
@@ -62,29 +68,45 @@ rooms =
                   </div>
                 </div>
 
+                  <!-- <h3 class='text-center'>Bedrooms</h3> -->
                 <div class='form-group'>
-                  <%= label_tag(:prop_type, "Type", class: 'col-sm-2 control-label') %>
-                  <div class="col-sm-10">
-                    <%= select_tag(:prop_type, options_for_select(property_types),  class:"form-control") %>
+                  <div class='col-sm-2 bedroom-label'>Bedrooms</div>
+                  <%= label_tag(:min_bedrooms, "Min", class: 'sr-only control-label') %>
+                  <div class="col-sm-5">
+                    <%= select_tag(:min_bedrooms, options_for_select(min_rooms),  class:"form-control") %>
+                  </div>
+                <!-- </div>
+
+                <div class='form-group'> -->
+                  <%= label_tag(:max_bedrooms, "Max", class: 'sr-only control-label') %>
+                  <div class="col-sm-5">
+                    <%= select_tag(:max_bedrooms, options_for_select(max_rooms),  class:"form-control") %>
+                  </div>
+                </div>
+                <!-- <h3 class='text-center'>Price</h3> -->
+                <div class='form-group'>
+                  <div class='col-sm-2 price-label'>Price</div>
+                  <%= label_tag(:min_price, "Min", class: 'sr-only control-label') %>
+                  <div class="col-sm-5">
+                     <%= number_field_tag(:min_price, nil , class:"form-control", min:0, placeholder:'price from') %>
+
+                  </div>
+                <!-- </div>
+                <div class='form-group'> -->
+                  <%= label_tag(:max_price, "Max", class: 'sr-only control-label') %>
+                  <div class="col-sm-5">
+                     <%= number_field_tag(:max_price, nil , class:"form-control", min:0, placeholder:'price to') %>
                   </div>
                 </div>
 
-                  <h3 class='text-center'>Bedrooms</h3>
-
-                <div class='form-group'>
-                  <%= label_tag(:min_bedrooms, "Min", class: 'col-sm-2 control-label') %>
+                <!-- <div class='form-group'>
+                   label_tag(:max_price, "Location", class: 'col-sm-2 control-label')
                   <div class="col-sm-10">
-                    <%= select_tag(:min_bedrooms, options_for_select(rooms),  class:"form-control") %>
+                     text_field_tag(:max_price, "", class:"form-control", placeholder:"Bristol")
                   </div>
-                </div>
+                </div> -->
 
-                <div class='form-group'>
-                  <%= label_tag(:max_bedrooms, "Max", class: 'col-sm-2 control-label') %>
-                  <div class="col-sm-10">
-                    <%= select_tag(:max_bedrooms, options_for_select(rooms),  class:"form-control") %>
-                  </div>
-                </div>
-
+                <!--  [search][max_price]-->
                 <div class='form-group'>
                   <div class="col-sm-offset-2 col-sm-10">
                     <%= submit_tag 'Search', name: 'search', id: 'search-btn', class:'btn btn-primary col-xs-12' %>
