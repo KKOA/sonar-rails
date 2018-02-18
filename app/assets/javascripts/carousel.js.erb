@@ -25,6 +25,9 @@ $( document ).ready(function() {
         // console.log(property);
         // console.log(res.map_key);
         address = property.display_address;
+        bedrooms = property.bedrooms;
+        bathrooms = property.bathrooms;
+        receptions =property.reception_rooms;
         description = property.short_description;
         coordinates ={
         "lat": property.lat,
@@ -42,7 +45,42 @@ $( document ).ready(function() {
         // Address
         $modal_title.html(address);
         // Description
-        $modal_desc.html(description);
+        property_info = ''
+        price = property.price;
+        if(channel === 'lettings')
+        {
+          price = accounting.formatMoney(price, "£", 2, ",", ".") +' pcm ';
+        }
+        property_info+= `<p class='prop_price'>${price}</p>`;
+
+        //Property Type
+        property_info+= `<p class='prop_type'> Type : ${property_type} </p>`;
+
+        property_info+= "<p>";
+        //Property Bedrooms
+        property_info+= `<span class='prop_bedrooms' data-toggle='tooltip' data-placement='top' title='Bedrooms'>${bedrooms}</span>`;
+
+        //Property Bathrooms
+        if(bathrooms != undefined)
+        {
+          property_info+= `<span class='prop_bathrooms' data-toggle='tooltip' data-placement='top' title='Bathroom'>${bathrooms}</span>`;
+        }
+
+        //Property Receptions
+        if(receptions != undefined)
+        {
+          property_info+= `<span class='prop_receptions' data-toggle='tooltip' data-placement='top' title='Reception'>${receptions}</span>`;
+        }
+        property_info+= "</p>";
+
+        //Property furnished
+        if(channel == 'lettings')
+        {
+          property_info+= `<p class='prop-furnished'> Furnished : ${isFurnished(property)}</p>`;
+        }
+        property_info += `<p>${description}</p>`;
+
+        $modal_desc.html(property_info);
 
         //photo
         photosCarousel = 'No images avaliable for property';
