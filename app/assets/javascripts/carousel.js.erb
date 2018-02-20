@@ -10,8 +10,8 @@ $( document ).ready(function() {
   $(".props-result").on("click","a",function(event){
     event.preventDefault();
     // console.log('-----------------------------')
-    url = $(this).attr('href');
-    if(url == undefined)
+    var url = $(this).attr('href');
+    if(url === undefined)
     {
       return false;
     }
@@ -21,32 +21,38 @@ $( document ).ready(function() {
       // success: function(property)
       success: function(res)
       {
-        property = res.property
+        var property = res.property;
         // console.log(property);
         // console.log(res.map_key);
-        address = property.display_address;
-        bedrooms = property.bedrooms;
-        bathrooms = property.bathrooms;
-        receptions =property.reception_rooms;
-        description = property.short_description;
-        coordinates ={
+        var address = property.display_address;
+        var property_type = "";
+        if(typeof property.property_type !== "undefined")
+        {
+          property_type = formatPropertyType(property.property_type);
+        }
+        var bedrooms = property.bedrooms;
+        var bathrooms = property.bathrooms;
+        var receptions =property.reception_rooms;
+        var description = property.short_description;
+        var coordinates ={
         "lat": property.lat,
         "lng": property.lng
-        }
-        floorplans = property.floorplans;
-        agency = {
+        };
+        var floorplans = property.floorplans;
+        var agency = {
         "name": property.agency.agency_name,
         "logo": 'https://mr0.homeflow.co.uk/'+property.agency.agency_logo,
         "url": 'http://'+property.agency.external_domain,
         // "tel": property.contact_telephone,
-        }
-        photos = property.photos;
+        };
+        var photos = property.photos;
 
         // Address
         $modal_title.html(address);
         // Description
-        property_info = ''
-        price = property.price;
+        var property_info = '';
+        var price = property.price;
+        var channel = property.primary_channel;
         if(channel === 'lettings')
         {
           price = accounting.formatMoney(price, "£", 2, ",", ".") +' pcm ';
@@ -86,25 +92,25 @@ $( document ).ready(function() {
         photosCarousel = 'No images avaliable for property';
         if(photos.length > 0)
         {
-          photosCarousel = '';
-          thumbnailPhotos = '';
-          fullsizePhotos = '';
+          var photosCarousel = '';
+          var thumbnailPhotos = '';
+          var fullsizePhotos = '';
           photos.forEach(function(photo, index){
-            thumbnailPhotoSrc = 'https://mr0.homeflow.co.uk/';
+            var thumbnailPhotoSrc = 'https://mr0.homeflow.co.uk/';
             thumbnailPhotoSrc += photo;
 
-            fullSizePhotoSrc = thumbnailPhotoSrc.replace(/120x90/g,'640x480');
+            var fullSizePhotoSrc = thumbnailPhotoSrc.replace(/120x90/g,'640x480');
 
             // Fullsize image
-            active = ''
-            if(index == 0){ active ='active'; }
+            var active = '';
+            if(index === 0){ active ='active'; }
             fullsizePhotos += "<div class='" + active +" item' data-slide-number='" + index + "'>";
             fullsizePhotos += "<img src='" + fullSizePhotoSrc + "' class='img-responsive'>";
             fullsizePhotos += "</div>";
 
             //thumbnails
-            selected =''
-            if(index == 0) { selected ='selected'; }
+            var selected ='';
+            if(index === 0) { selected ='selected'; }
             thumbnailPhotos += "<li>";
             thumbnailPhotos +=   "<a id='carousel-selector-" + index + "' class='"+selected+"'>";
             thumbnailPhotos +=     "<div class='slider-navigation'>";
@@ -112,7 +118,7 @@ $( document ).ready(function() {
             thumbnailPhotos +=     "</div>";
             thumbnailPhotos +=   "</a>";
             thumbnailPhotos += "</li>";
-          })
+          });
 
           photosCarousel += "<div class='col-xs-12' id='slider'>";
             photosCarousel += "<div class='col-xs-12' id='carousel-bounding-box'>";
@@ -147,8 +153,8 @@ $( document ).ready(function() {
         $('#photoCarousel').html(photosCarousel);
 
         //MapView
-        map_url = "https://www.google.com/maps/embed/v1/place?";
-        parameters = `q=${address}`;
+        var map_url = "https://www.google.com/maps/embed/v1/place?";
+        var parameters = `q=${address}`;
         parameters += "&zoom=13";
         parameters += `&key=${res.map_key}`;
         parameters += `&center=${coordinates.lat},${coordinates.lng}`;
@@ -156,27 +162,27 @@ $( document ).ready(function() {
         $modal_map_view.html(`<iframe src='${map_url}'></iframe>`);
 
         //floorplan
-        floorPlanPhotos = 'No floorplan are avaliable for property';
+        var floorPlanPhotos = 'No floorplan are avaliable for property';
         // console.log(floorplans.length);
         if(floorplans.length > 0)
         {
           floorPlanPhotos = "<ul class='list-inline'>";
           floorplans.forEach(function(floorplan, index){
             // console.log(floorplan);
-            FloorPlanSrc='https://mr0.homeflow.co.uk/';
-            FloorPlanSrc += floorplan.image;
+            var floorPlanSrc='https://mr0.homeflow.co.uk/';
+            floorPlanSrc += floorplan.image;
 
             floorPlanPhotos += "<li>";
-            floorPlanPhotos += "<img src='" + FloorPlanSrc + "' class='img-responsive img-rounded'>";
+            floorPlanPhotos += "<img src='" + floorPlanSrc + "' class='img-responsive img-rounded'>";
             floorPlanPhotos += "</li>";
-          })
+          });
           floorPlanPhotos += "</ul>";
 
         }
         $('#floor-plan .col-xs-12').html(floorPlanPhotos);
 
         // Agency
-        agency_text =''
+        var agency_text ='';
         agency_text+= "<p class='text-center'> Interested in this property or have general enquiry</p>";
         // agency_text+= "<div class='agency-contact text-center'>" + agency.tel +"</div>";
         agency_text+= "<p class='text-center'>click the logo below to vist our site.</p>";

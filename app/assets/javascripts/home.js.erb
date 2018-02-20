@@ -1,41 +1,41 @@
 $(document).ready(function(){
-
+  "use strict";
   // Form fields
-  $channel = $('#channel');
-  $min_bedrooms = $('#min_bedrooms');
-  $max_bedrooms = $('#max_bedrooms');
-  $location = $('#location');
-  $min_price = $('#min_price');
-  $max_price = $('#max_price');
-  $props_result = $('.props-result');
+  var $channel = $("#channel");
+  var $min_bedrooms = $("#min_bedrooms");
+  var $max_bedrooms = $("#max_bedrooms");
+  var $location = $("#location");
+  var $min_price = $("#min_price");
+  var $max_price = $("#max_price");
+  var $props_result = $(".props-result");
 
   // prevent min bedrooms exceed max price
   $min_bedrooms.change(function () {
-      $this = $(this);
+      var $this = $(this);
       if(isBigger($max_bedrooms, $this) && !(isBlank($max_bedrooms)))
       {
-        matchValues($max_bedrooms, $this)
+        matchValues($max_bedrooms, $this);
       }
   });
 
   $max_bedrooms.change(function () {
-      $this = $(this);
+      var $this = $(this);
       if(isBigger($this, $min_bedrooms) && !(isBlank($min_bedrooms)))
       {
-        matchValues($min_bedrooms, $this)
+        matchValues($min_bedrooms, $this);
       }
   });
 
   // prevent min bedrooms exceed max price
   $min_price.change(function () {
-      $this = $(this);
+      var $this = $(this);
       // console.log('');
       // console.log('before');
       // console.log($this.val());
       // console.log($max_price.val());
       if(isBigger($max_price, $this) && !(isBlank($max_price)))
       {
-        matchValues($max_price, $this)
+        matchValues($max_price, $this);
         // console.log('called');
       }
       // console.log('after');
@@ -44,77 +44,75 @@ $(document).ready(function(){
   });
 
   $max_price.change(function () {
-      $this = $(this);
+      var $this = $(this);
       if(isBigger($this, $min_price) && !(isBlank($min_price)))
       {
-        matchValues($min_price, $this)
+        matchValues($min_price, $this);
       }
   });
 
 
   //
-  $('#search-btn').click(function(event){
+  $("#search-btn").click(function(event){
     event.preventDefault();
-    loading_src = `<%= image_path("loading.gif")%>`;
+    var loading_src = `<%= image_path("loading.gif")%>`;
     $props_result.html(`<img src="${loading_src}" id='searchResult' class='loading'>`);
-    criteria = {
+    var criteria = {
       channel: $channel.val(),
       min_bedrooms: $min_bedrooms.val(),
       max_bedrooms: $max_bedrooms.val(),
       location: $location.val(),
       min_price: $min_price.val(),
       max_price: $max_price.val()
-    }
+    };
 
     //Ajax
     $.ajax({
-      type: 'GET',
-      url: '/search',
+      type: "GET",
+      url: "/search",
       data: criteria,
       success: function(properties)
       {
-        $('.props-result .loading').fadeOut('fast');
+        $(".props-result .loading").fadeOut("fast");
         // console.log(properties);
         // console.log(properties.length);
-        result =''
+        var result ="";
         if(properties.length <= 0)
         {
-          result = '<p class="text-center"><strong>';
-          result += 'Sorry, we could not find any properties matching your criterias. Try widenning your search criteria.'
-          result += '</strong></p>';
+          result = "<p class='text-center'><strong>";
+          result += "Sorry, we could not find any properties matching your criterias. Try widenning your search criteria.";
+          result += "</strong></p>";
         }
         else
         {
           properties.forEach(function(property) {
             // console.log(property);
 
-            property_uri = property.resource_uri;
+            var property_uri = property.resource_uri;
             // console.log(property_uri);
-            property_id = property.property_id;
-            price = property.price_value;
-            channel = property.primary_channel;
-            property_type = ''
-            if(typeof property.property_type !== 'undefined')
+            var price = property.price_value;
+            var channel = property.primary_channel;
+            var property_type = "";
+            if(typeof property.property_type !== "undefined")
             {
               property_type = formatPropertyType(property.property_type);
             }
-            bedrooms = property.bedrooms;
-            bathrooms = property.bathrooms;
-            receptions =property.reception_rooms;
-            description = property.short_description;
-            img_src ='https://dummyimage.com/600x400/ebe7e8/000000.png&text=Awaiting+Images';
+            var bedrooms = property.bedrooms;
+            var bathrooms = property.bathrooms;
+            var receptions =property.reception_rooms;
+            var img_src ="https://dummyimage.com/600x400/ebe7e8/000000.png&text=Awaiting+Images";
             // img_src = `<%= image_path("placeholder.png")%>`;
-            if(property.photos.length != 0)
+            if(property.photos.length !== 0)
             {
-              img_src = 'https://mr0.homeflow.co.uk/';
-              img_src += property.photos[0].replace(/120x90/g,'600x400');
+              img_src = "https://mr0.homeflow.co.uk/";
+              img_src += property.photos[0].replace(/120x90/g,"600x400");
             }
 
-            address = property.display_address;
+            var address = property.display_address;
 
             result +="<div class='col-xs-offset-center-1 col-xs-11 col-sm-5 col-sm-offset-center-1 col-md-3 property'>";
 
-            result +="<p class='prop-address text-center'>"+address+"</p>";
+            result +=`<p class='prop-address text-center'>${address}</p>`;
 
             result += "<a ";
             // if((channel === 'sales' && isSold(property) === false ) || (channel === 'lettings' && letAgreed(property) === false))
@@ -136,9 +134,9 @@ $(document).ready(function(){
 
             //Price
             price = property.price;
-            if(channel === 'lettings')
+            if(channel === "lettings")
             {
-              price = accounting.formatMoney(price, "£", 2, ",", ".") +' pcm ';
+              price = accounting.formatMoney(price, "£", 2, ",", ".") +" pcm ";
             }
             result += `<p class='prop-price'>${price}</p>`;
 
@@ -150,34 +148,25 @@ $(document).ready(function(){
             result += `<span class='prop_bedrooms' data-toggle='tooltip' data-placement='top' title='Bedrooms'>${bedrooms}</span>`;
 
             //Property Bathrooms
-            if(bathrooms != undefined)
+            if(bathrooms !== undefined)
             {
               result += `<span class='prop_bathrooms' data-toggle='tooltip' data-placement='top' title='Bathroom'>${bathrooms}</span>`;
             }
 
             //Property Receptions
-            if(receptions != undefined)
+            if(receptions !== undefined)
             {
               result += `<span class='prop_receptions' data-toggle='tooltip' data-placement='top' title='Reception'>${receptions}</span>`;
             }
             result += "</p>";
 
             //Property furnished
-            if(channel == 'lettings')
+            if(channel === "lettings")
             {
               result += `<p class='prop-furnished'> Furnished : ${isFurnished(property)}</p>`;
             }
 
-            // if(description.length !== 0)
-            // {
-            //   result += "<p class='prop-description'>";
-            //   result +=`${description.substring(0,150)} ... `;
-            //   if((channel== 'sales' && isSold(property) == false ) || (channel== 'lettings' && letAgreed(property) == false))
-            //   {
-            //     result += `<a href='${property_uri}' class='more'> More </a>`;
-            //   }
-            //   result +="</p>";
-            // }
+
             result +=`<a href='${property_uri}' class='btn btn-default more'>More</a>`;
 
             result += "</div>"; /* End of Property info */
@@ -191,5 +180,5 @@ $(document).ready(function(){
       }// end of success
     });// End of ajax
   }); // End of search-btn clicked
-  $('body').tooltip({selector: '[data-toggle="tooltip"]'});
+  $("body").tooltip({selector: "[data-toggle='tooltip']"});
 });
