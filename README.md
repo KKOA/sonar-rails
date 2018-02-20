@@ -34,7 +34,6 @@ This project was constructed using following technologies:
 
 <strong>Live version of project is available at<br></strong> https://sonar-rails.herokuapp.com/
 
-
 ## Screen Shot
 ![Home screen](https://github.com/KKOA/sonar-rails/blob/master/Home.png)
 ![Search Results view ](https://github.com/KKOA/sonar-rails/blob/master/Search.png)
@@ -44,23 +43,23 @@ This project was constructed using following technologies:
 ## Setup
 <Strong>In order to run this application locally you will need the following: </strong>
 - an api-key from Homeflow
-<!-- - an api-key for Google maps  -->
+- Google Map Embedded Api key
 
-You need assign api key to the following environment variables
-<!-- GOOGLE_MAP_KEY -->
-- HOMEFLOW_KEY
-
-The key name must match the ones used in
-<br>app/controllers/home_controller.rb.
 ```
 git clone https://github.com/KKOA/sonar-rails
 cd sonar-rails
 bundle install
+touch .env
+```
+Open up the file and assign the revelant api keys to the following
+```
+HOMEFLOW_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+GOOGLE_MAP_API=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
 ## Run Application
 ```
-cd sonar
+cd sonar-rails
 rails s
 ```
 
