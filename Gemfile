@@ -35,6 +35,7 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'dotenv-rails', groups: [:development, :test], require: 'dotenv/rails-now'
 gem 'mysql2'
 gem 'rails_real_favicon'
 gem 'sprockets_better_errors'
