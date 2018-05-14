@@ -35,9 +35,10 @@ This project was constructed using following technologies:
 <strong>Live version of project is available at<br></strong> https://sonar-rails.herokuapp.com/
 
 ## Screen Shot
-![Home screen](https://github.com/KKOA/sonar-rails/blob/master/Home.png)
-![Search Results view ](https://github.com/KKOA/sonar-rails/blob/master/Search.png)
-![Individual Property](https://github.com/KKOA/sonar-rails/blob/master/Property.png)
+![Home screen](https://github.com/KKOA/sonar-rails/blob/master/home.png)
+![Search Results view ](https://github.com/KKOA/sonar-rails/blob/master/search.png)
+![Individual Property description](https://github.com/KKOA/sonar-rails/blob/master/property-desc.png)
+![Individual Property map](https://github.com/KKOA/sonar-rails/blob/master/property-map.png)
 
 
 ## Setup
