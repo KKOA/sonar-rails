@@ -37,7 +37,8 @@ This project was constructed using following technologies:
 ## Screen Shot
 ![Home screen](https://github.com/KKOA/sonar-rails/blob/master/Home.png)
 ![Search Results view ](https://github.com/KKOA/sonar-rails/blob/master/Search.png)
-![Individual Property](https://github.com/KKOA/sonar-rails/blob/master/Property.png)
+![Individual Property description](https://github.com/KKOA/sonar-rails/blob/master/property-desc.png)
+![Individual Property map](https://github.com/KKOA/sonar-rails/blob/master/property-map.png)
 
 
 ## Setup
