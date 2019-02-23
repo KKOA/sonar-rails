@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 ruby '~>2.4.0'
@@ -7,17 +9,17 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.6'
+gem 'rails', '~> 5.2.0'
 
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma', '~> 3.12.0'
 # Use SCSS for stylesheets
 gem 'autoprefixer-rails'
 # gem 'bootstrap-sass', '~>3.3.7'
 gem 'bootstrap-sass', '~>3.4.0'
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier', '>= 4.0.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -26,7 +28,7 @@ gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster.
 # Read more: https://github.com/turbolinks/turbolinks
 gem 'jquery-rails'
-gem 'turbolinks', '~> 5'
+gem 'turbolinks', '~> 5.1.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -36,11 +38,12 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-gem 'dotenv-rails', groups: [:development, :test], require: 'dotenv/rails-now'
+gem 'dotenv-rails', groups: %i[development test], require: 'dotenv/rails-now'
+gem 'httparty'
 gem 'mysql2'
 gem 'rails_real_favicon'
+
 gem 'sprockets_better_errors'
-gem 'httparty'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution
@@ -59,11 +62,11 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 
   # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
+  gem 'sqlite3', '~>1.3.6'
 end
 
 group :test do
-  gem 'rubocop'
+  gem 'rubocop', '~>0.62.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
